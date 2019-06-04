@@ -1,2 +1,2 @@
-# Summer_researcj
+# Summer_research
 AI in metamaterial
