@@ -4,25 +4,14 @@ math.randomseed(os.time())
 
 
 function str_from_complex(a)
-      return string.format('%.4f %.4f', a[1], a[2])
---return string.format(a[1], a[2])
+    return string.format('%.4f %.4f', a[1], a[2])
 end
 
 function polar_str_from_complex(a)
-     local phase = math.atan2(a[1], a[2])
+    local phase = math.atan2(a[1], a[2])
     if phase < 0 then
-     phase = phase + 2*pi
-end
-
--- return string.format('amp:%.4f, phase:%.4fdeg', math.sqrt(a[1]^2+a[2]^2), phase/deg)
---return string.format(math.sqrt(a[1]^2+a[2]^2), phase/deg)
---return string.format('amp:%.4f, phase:%.4fdeg', a[1]^2+a[2]^2, phase/deg)
-
---return string.format(a[1], a[2])
---return string.format(a[1])
-return string.format(a[1], a[2])
---return string.format(phase/deg)
-
+        phase = phase + 2*pi
+    end
 end
 
 S = S4.NewSimulation()
@@ -32,14 +21,13 @@ vx = 0
 vy = 1
 
 S:SetLattice({ux,uy}, {vx,vy})
-S:SetNumG(50)
+S:SetNumG(100)
 
 lamda1=1;
 lamda2=1.42;
 lamda3=1.7;
 
 n_PDMS=1.4^2;
---n_si=(-0.17/0.2*(lamda2-1.3)+3.626)^2;  --(3.626 at 1300, 3.54 at 1400, 3.49 at 1450, 3.45 at 1500, 3.36 at 1600 )
 n_si=3.54^2;
 
 S:AddMaterial('Vacuum', {1,0})
@@ -53,32 +41,21 @@ h_relative=h/period;
 S:AddLayer('top', 0, 'PDMS')
 S:AddLayer('slab',h_relative , 'PDMS')
 S:AddLayerCopy('bottom', 0, 'top')
---S:AddLayer('bottom', 0, 'Glass')
+shape = {0.25, 0.25,   -0.25,0.25,  -0.25,-0.25,   0.25,-0.25}
+--for r = 0.05/period, 0.255/period, 0.005/period do
+r =0.40939066
+    for freq = 1/lamda3*period, 1/lamda1*period, 0.005 do
 
-for r = 0.05/period, 0.255/period, 0.005/period do
-for freq = 1/lamda3*period, 1/lamda1*period, 0.005 do
+        S:SetFrequency(freq)
+        --S:SetLayerPatternRectangle('slab', 'Silicon', {0, 0}, 0, {0.1, 0.1})
+        -- S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape)
+        S:SetLayerPatternCircle('slab', 'Silicon', {0,0}, r)
+        S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
 
-S:SetFrequency(freq)
+        forw, back = S:GetAmplitudes('top', 0)
+        forw, h = S:GetAmplitudes('bottom', 0)
 
-S:SetLayerPatternCircle('slab', 'Silicon', {0,0}, r)
+        print(r, freq, str_from_complex(forw[1]))
 
-S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
-
-forw, back = S:GetAmplitudes('top', 0)
-forw = S:GetAmplitudes('bottom', 0)
-
-print(r, freq, str_from_complex(forw[1]))
-
-end
-end
-
---python
-for r in range(0.05/period, 0.255/period, 0.005/period):
-	for freq in range(1/lamda3*period, 1/lamda1*period, 0.005):
-		S.SetFrequency(freq)
-		S.SetRegionCircle('slab', 'Silicon', (0,0), r)
-		S.SetExcitationPlanewave((0, 0), (1, 0), (0, 0))
-		
-		forw, back = S.GetAmplitudes('top', 0)
-		forw, _ = S.GetAmplitudes('bottom', 0)
-		print(r, freq, str_from_complex(forw[1]))
+    end
+--end
