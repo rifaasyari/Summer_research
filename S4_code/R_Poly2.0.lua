@@ -83,8 +83,15 @@ for i = 1, 6, 1 do
     dfs(points, 2, i, 6, sub, res)
     table.remove(sub)
 end
+
+test_shape = 700
+--[[
+for i = 1, #res[100], 1 do
+    print(res[test_shape][i])
+end
+--]]
 --for i = 1, #res, 1 do
-    local cur_points = res[100]
+    local cur_points = res[test_shape]
     -- apply the first 45 degree points distribution
     for j = 1, 6, 1 do
         cur_point = points[j][cur_points[j]]
@@ -119,10 +126,13 @@ end
             end
         end
     end
-    for i = 1, #shape, 1 do
-        print(shape[i])
+
+    for i = 1, #shape, 2 do
+        print(shape[i], shape[i + 1])
     end
-    for freq = 1/lamda3*period, 1/lamda1*period, 0.005 do
+
+    --[[
+        for freq = 1/lamda3*period, 1/lamda1*period, 0.002 do
         S:SetFrequency(freq)
         S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape)
         S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
@@ -131,25 +141,6 @@ end
         forw, h = S:GetAmplitudes('bottom', 0)
 
         print(freq, str_from_complex(forw[1]))
-
     end
---end
-
-
-for i = 1, #shape, 1 do
-    print(shape[i])
-end
-
-
---for i = 1, 6, 1 do
---    cur = math.random(1, #points[i])
---    cur_point = points[i][cur]
---    x = cur_point[1] * math.cos(cur_point[2] * deg)
---    y = cur_point[1] * math.sin(cur_point[2] * deg)
---    table.insert(base, x)
---    table.insert(base, y)
---end
-
---for i = 1, #base, 1 do
---    print(base[i])
+    --]]
 --end
