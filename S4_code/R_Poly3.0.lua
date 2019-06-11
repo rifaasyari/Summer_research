@@ -143,48 +143,59 @@ function gen_full_shape(base, SYMMETRY, shape)
     end
 end
 
-
-------------------------------- Main starts here -------------------------------
-
-sub, res = {}, {}
-activate = {0, 0, 0, 0, 0, 1}
-dfs_start = -1
-
-for i = 1, 6, 1 do
-    if dfs_start == -1 and activate[i] == 1 then
-        dfs_start = i
+function permutation(cur, sub, res)
+    if cur > 6 then
+        table.insert(res, table.clone(sub))
+        return
     end
-    if dfs_start == -1 and activate[i] == 0 then
-        table.insert(sub, 0)
-    end
-end
 
-for i = 1, #POINTS[dfs_start], 1 do
-    table.insert(sub, i)
-    dfs(POINTS, dfs_start + 1, i, 6, sub, res, activate)
+    table.insert(sub, 0)
+    permutation(cur + 1, sub, res)
+    table.remove(sub)
+    table.insert(sub, 1)
+    permutation(cur + 1, sub, res)
     table.remove(sub)
 end
 
--- test for result of dfs function
--- for i = 1, #res, 1 do
-    --[[
-    print("Combination: " .. i)
-    print(res[i][1])
-    print(res[i][2])
-    print(res[i][3])
-    print(res[i][4])
-    print(res[i][5])
-    print(res[i][6])
-    --]]
-    i = 4
-    base = one_8th(res[i], POINTS)
-    for i = 6, 1, -1 do
-        table.insert(base, {base[i][2], base[i][1]})
+------------------------------- Main starts here -------------------------------
+
+count = 0
+sub_p, permutations = {}, {}
+permutation(1, sub_p, permutations)
+for k = 2, #permutations, 1 do
+    activate = permutations[k]
+    print('Activated lines')
+    print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
+    sub, res = {}, {}
+    dfs_start = -1
+
+    -- corner case if the permutation starts with 0s {0, 0, 1, 0, 1, 1}
+    for i = 1, 6, 1 do
+        if dfs_start == -1 and activate[i] == 1 then
+            dfs_start = i
+        end
+        if dfs_start == -1 and activate[i] == 0 then
+            table.insert(sub, 0)
+        end
     end
-    shape = {}
-    -- propagate through four quarters
-    gen_full_shape(base, SYMMETRY, shape)
-    for i = 1, #shape, 2 do
-        print(shape[i], shape[i + 1])
+
+    -- do the dfs based on current activated lines
+    for i = 1, #POINTS[dfs_start], 1 do
+        table.insert(sub, i)
+        dfs(POINTS, dfs_start + 1, i, 6, sub, res, activate)
+        table.remove(sub)
     end
--- end
+    print('# of shapes: ' .. #res)
+    count = count + #res
+    for i = 1, #res, 1 do
+        base = one_8th(res[i], POINTS)
+        for i = 6, 1, -1 do
+            table.insert(base, {base[i][2], base[i][1]})
+        end
+        shape = {}
+        -- propagate through four quarters
+        gen_full_shape(base, SYMMETRY, shape)
+    end
+end
+
+print('Total # of shpae: ' .. count)
