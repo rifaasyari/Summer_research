@@ -1,5 +1,6 @@
 ------------------------------- Global Variables -------------------------------
 
+LINE = 6
 SYMMETRYDEG = math.pi / 180
 math.randomseed(os.time())
 SYMMETRY = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}}
@@ -92,7 +93,7 @@ function one_8th(cur_points, POINTS)
     local skip = {}
     local x1, y1 = -1, -1
 
-    for i = 1, 6, 1 do
+    for i = 1, LINE, 1 do
         if cur_points[i] == 0 then
             table.insert(skip, i)
         else
@@ -144,7 +145,7 @@ function gen_full_shape(base, SYMMETRY, shape)
 end
 
 function permutation(cur, sub, res)
-    if cur > 6 then
+    if cur > LINE then
         table.insert(res, table.clone(sub))
         return
     end
@@ -170,7 +171,7 @@ for k = 2, #permutations, 1 do
     dfs_start = -1
 
     -- corner case if the permutation starts with 0s {0, 0, 1, 0, 1, 1}
-    for i = 1, 6, 1 do
+    for i = 1, LINE, 1 do
         if dfs_start == -1 and activate[i] == 1 then
             dfs_start = i
         end
@@ -189,7 +190,7 @@ for k = 2, #permutations, 1 do
     count = count + #res
     for i = 1, #res, 1 do
         base = one_8th(res[i], POINTS)
-        for i = 6, 1, -1 do
+        for i = LINE, 1, -1 do
             table.insert(base, {base[i][2], base[i][1]})
         end
         shape = {}
