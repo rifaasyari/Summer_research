@@ -126,6 +126,7 @@ function one_8th(cur_points, POINTS)
     return table.clone(base)
 end
 
+-- generate the full shape
 function gen_full_shape(base, SYMMETRY, shape)
     for i = 1, #SYMMETRY, 1 do
         if i % 2 == 1 then
@@ -158,6 +159,7 @@ function permutation(cur, sub, res)
     table.remove(sub)
 end
 
+-- generate the spectrum
 function generate_spectrum()
     for freq = 1/lamda3*period, 1/lamda1*period, 0.003 do
         S:SetFrequency(freq)
@@ -169,6 +171,20 @@ function generate_spectrum()
 
         print(freq, str_from_complex(forw[1]))
     end
+end
+
+-- check if the shape is able to generate spectrum
+function check_shape(p)
+    num_zero = 0
+    for i = 1, #p, 1 do
+        if p[i] == 1 then
+            num_zero = num_zero + 1
+        end
+        if LINE - num_zero < 2 then
+            return false
+        end
+    end
+    return true
 end
 
 ------------------------------- Main starts here -------------------------------
@@ -206,9 +222,14 @@ count = 0
 sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
 for k = 2, #permutations, 1 do
+    -- test code: choose the activation sequence
+    --k = 2
     activate = permutations[k]
-    print('Activated lines')
-    print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
+
+    -- test code: see the activated line
+    -- print('Activated lines')
+    -- print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
+
     sub, res = {}, {}
     dfs_start = -1
 
@@ -228,9 +249,19 @@ for k = 2, #permutations, 1 do
         dfs(POINTS, dfs_start + 1, i, 6, sub, res, activate)
         table.remove(sub)
     end
-    print('# of shapes: ' .. #res)
+
+    -- test code: the number of current shape
+    -- print('# of shapes: ' .. #res)
+
     count = count + #res
     for i = 1, #res, 1 do
+        -- test code: choose the number of shape
+        -- i = 2
+
+        -- test the dfs result, ex {1, 0, 2, 3, 1, 5}
+        -- for b = 1, #res, 1 do
+        --    print(res[b][1], res[b][2], res[b][3], res[b][4], res[b][5], res[b][6])
+        -- end
         base = one_8th(res[i], POINTS)
         for i = LINE, 1, -1 do
             table.insert(base, {base[i][2], base[i][1]})
@@ -238,6 +269,12 @@ for k = 2, #permutations, 1 do
         shape = {}
         -- propagate through four quarters
         gen_full_shape(base, SYMMETRY, shape)
+
+        -- test shape
+        -- for q = 1, #shape, 2 do
+        --    print(shape[q], shape[q + 1])
+        -- end
+
         generate_spectrum()
     end
 end
