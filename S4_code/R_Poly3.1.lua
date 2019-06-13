@@ -248,7 +248,7 @@ sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
 --for k = 2, #permutations, 1 do
 batch = 2
-begin = 3
+begin = 9
 for k = begin, begin + batch, 1 do
     -- test code: choose the activation sequence
     --k = 2
