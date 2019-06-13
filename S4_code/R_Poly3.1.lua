@@ -282,7 +282,7 @@ for k = begin, begin + batch, 1 do
     -- test code: the number of current shape
     -- print('# of shapes: ' .. #res)
 
-    count = count + #res
+    -- count = count + #res
     for i = 1, #res, 1 do
         -- test code: choose the number of shape
         -- i = 2
@@ -303,11 +303,17 @@ for k = begin, begin + batch, 1 do
             gen_full_shape(base, SYMMETRY, shape)
 
             -- test shape
-            -- for q = 1, #shape, 2 do
-            --    print(shape[q], shape[q + 1])
-            -- end
+            for qq = 1, #shape, 2 do
+                print(shape[qq], shape[qq + 1])
+            end
 
-            generate_spectrum()
+            -- output y (12 * len . 1)
+            --[[
+             for q = 1, LINE, 1 do
+                print(base[q][1], base[q][2])
+             end
+            --]]
+            --generate_spectrum()
         end
     end
 end
