@@ -1,2 +1,2 @@
 # Summer_research
-AI in metamaterial
+Macine Learning in Metamaterial Inverse Design
