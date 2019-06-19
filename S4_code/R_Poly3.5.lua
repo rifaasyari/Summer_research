@@ -160,16 +160,22 @@ function permutation(cur, sub, res)
 end
 
 -- generate the spectrum
-function generate_spectrum()
+function generate_spectrum(origin)
+    --for q = 1, #origin, 2 do
+    --   print(origin[q], origin[q + 1])
+    --end
     for freq = 1/lamda3*period, 1/lamda1*period, 0.001 do
         S:SetFrequency(freq)
-        S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape2)
+        S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, origin)
         S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
 
         forw, back = S:GetAmplitudes('top', 0)
         forw, h = S:GetAmplitudes('bottom', 0)
 
         print(freq, str_from_complex(forw[1]))
+        for q = 1, #origin, 2 do
+           print(origin[q], origin[q + 1])
+        end
     end
 end
 --[[
@@ -282,9 +288,9 @@ begin = 2
     --print('# of shapes: ' .. #res)
 
     -- count = count + #res
-    for i = 1, #res, 1 do
+    --for i = 1, #res, 1 do
         -- test code: choose the number of shape
-        -- i = 2
+         i = 1
 
         --if cannot_use(res[i]) then
         --else
@@ -318,9 +324,9 @@ begin = 2
             --    print(base[q][1], base[q][2])
              --end
 
-            generate_spectrum()
+            generate_spectrum(shape2)
         --end
-    end
+    --end
 --end
 
 --print('Total # of shpae: ' .. count)
