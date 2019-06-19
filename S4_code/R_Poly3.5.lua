@@ -173,9 +173,9 @@ function generate_spectrum(origin)
         forw, h = S:GetAmplitudes('bottom', 0)
 
         print(freq, str_from_complex(forw[1]))
-        for q = 1, #origin, 2 do
-           print(origin[q], origin[q + 1])
-        end
+        --for q = 1, #origin, 2 do
+        --   print(origin[q], origin[q + 1])
+        --end
     end
 end
 --[[

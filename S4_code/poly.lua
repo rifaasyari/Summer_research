@@ -93,7 +93,7 @@ shape = {
         forw, h = S:GetAmplitudes('bottom', 0)
         print(freq, str_from_complex(forw[1]))
         --print('??')
-        for i = 1, #shape, 2 do
-            print(shape[i], shape[i + 1])
-        end
+        --for i = 1, #shape, 2 do
+        --    print(shape[i], shape[i + 1])
+        --end
     end
