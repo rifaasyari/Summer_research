@@ -182,15 +182,15 @@ count = 0
 sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
 
---for k = 3, #permutations, 1 do
+for k = 2, 3, 1 do
     -- test code: choose the activation sequence
-    k = 5
+    --k = 5
 
     activate = permutations[k]
 
     -- test code: see the activated line
-    print('Activated lines')
-    print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
+    --print('Activated lines')
+    --print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
 
     sub, res = {}, {}
     dfs_start = -1
@@ -213,7 +213,7 @@ permutation(1, sub_p, permutations)
     end
 
     -- test code: the number of current shape
-    print('# of shapes: ' .. #res)
+    --print('# of shapes: ' .. #res)
 
     -- count = count + #res
     for i = 1, #res, 1 do
@@ -223,8 +223,8 @@ permutation(1, sub_p, permutations)
         count = count + 1
 
         -- test the dfs result, ex {1, 0, 2, 3, 1, 5}
-        print('Shape: ' .. count)
-        print(res[i][1], res[i][2], res[i][3], res[i][4], res[i][5], res[i][6])
+        --print('Shape: ' .. count)
+        --print(res[i][1], res[i][2], res[i][3], res[i][4], res[i][5], res[i][6])
 
         base = one_8th(res[i], POINTS)
         for i = LINE, 1, -1 do
@@ -241,9 +241,9 @@ permutation(1, sub_p, permutations)
 
         shape2 = filter_duplicate(shape)
         -- test shape
-        --for qq = 1, #shape2, 2 do
-        --    print(shape2[qq], shape2[qq + 1])
-        --end
+        for qq = 1, #shape2, 2 do
+            print(shape2[qq], shape2[qq + 1])
+        end
 
     end
 
