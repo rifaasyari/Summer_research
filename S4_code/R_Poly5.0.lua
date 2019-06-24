@@ -76,7 +76,7 @@ local data = lines_from(file)
 size = 80
 --print(#data)
 for i = 1, #data, size do
-    count = count + 1
+    --count = count + 1
     --if i % size == 1 then
     --    print('Shape '.. i / size..': ')
     --end
