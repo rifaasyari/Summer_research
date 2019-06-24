@@ -1,7 +1,7 @@
 ------------------------------- Global Variables -------------------------------
 lamda1=1;
 lamda2=1.42;
-lamda3=1.7;
+lamda3=1.5;
 
 n_PDMS=1.4^2;
 n_si=3.54^2;
@@ -70,11 +70,24 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA7_#14_sh_gen.txt'
+local file = 'data/DATA12_#40_gen.txt'
 local data = lines_from(file)
 
 size = 80
+--print(#data)
+count = 0
 for i = 1, #data, size do
+    count = count + 1
+    --if i % size == 1 then
+    --    print('Shape '.. i / size..': ')
+    --end
     shape = {unpack(data, i, i + size - 1)}
+    --print('Shape ' .. i / size.. ': ')
+    --for j = 1, #shape, 2 do
+    --    print(shape[j], shape[j + 1])
+    --end
+    --print(data[i], data[i + 1])
+    --print(#shape)
     generator(shape)
 end
+--print(count)
