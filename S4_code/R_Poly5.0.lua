@@ -75,7 +75,6 @@ local data = lines_from(file)
 
 size = 80
 --print(#data)
-count = 0
 for i = 1, #data, size do
     count = count + 1
     --if i % size == 1 then
