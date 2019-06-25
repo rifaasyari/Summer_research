@@ -70,14 +70,13 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA12_#40_gen.txt'
+local file = 'data/DATA13_#13_gen.txt'
 local data = lines_from(file)
 
 size = 80
 --print(#data)
-count = 0
 for i = 1, #data, size do
-    count = count + 1
+    --count = count + 1
     --if i % size == 1 then
     --    print('Shape '.. i / size..': ')
     --end
