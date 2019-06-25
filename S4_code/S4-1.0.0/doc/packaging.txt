@@ -1,0 +1,1 @@
+tar --exclude='S4/autom4te.cache' --exclude='S4/materials' --exclude='S4/temp' --exclude='S4/.git' --exclude='S4/examples/broken' -czvf S4_`date '+%Y%m%d'`.tar.gz S4
