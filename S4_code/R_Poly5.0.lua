@@ -70,16 +70,18 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA13_#13_gen.txt'
+local file = 'data/DATA17_#5_gen.txt'
 local data = lines_from(file)
 
 size = 80
+count = 0
 --print(#data)
 for i = 1, #data, size do
     --count = count + 1
     --if i % size == 1 then
     --    print('Shape '.. i / size..': ')
     --end
+    --count = count + 1
     shape = {unpack(data, i, i + size - 1)}
     --print('Shape ' .. i / size.. ': ')
     --for j = 1, #shape, 2 do
