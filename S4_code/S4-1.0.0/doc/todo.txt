@@ -1,0 +1,9 @@
+TODO:
+- Don't need to store Epsilon and Epsilon2 for uniform layers
+- Document the non-public functions in here
+- Remove some commented out junk debugging code
+- Figure out what is wrong with Lanczos smoothing (is there anything wrong?)
+- Choose Lanczos values more intelligently
+
+- 1D lattices should have Fourier transforms which depend only on the intersection of each shape with the x-axis (line segments).
+
