@@ -62,7 +62,7 @@ function generator(input)
         S:SetFrequency(freq)
         S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, input)
         S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
-        forw, back = S:GetAmplitudes('top', 0)
+        --forw, back = S:GetAmplitudes('top', 0)
         forw, h = S:GetAmplitudes('bottom', 0)
         print(freq, str_from_complex(forw[1]))
     end
@@ -70,7 +70,7 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA5_4_gen.txt'
+local file = 'data/DATA5_4_gen2.txt'
 local data = lines_from(file)
 
 --size = 80
