@@ -21,7 +21,7 @@ h=750*10^-3;
 h_relative=h/period;
 
 S:SetLattice({ux,uy}, {vx,vy})
-S:SetNumG(140)
+S:SetNumG(70)
 
 S:AddLayer('top', 0, 'PDMS')
 S:AddLayer('slab',h_relative , 'PDMS')
@@ -62,7 +62,7 @@ function generator(input)
         S:SetFrequency(freq)
         S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, input)
         S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
-        forw, back = S:GetAmplitudes('top', 0)
+        --forw, back = S:GetAmplitudes('top', 0)
         forw, h = S:GetAmplitudes('bottom', 0)
         print(freq, str_from_complex(forw[1]))
     end
@@ -70,25 +70,15 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA19_#14_gen.txt'
+local file = 'data/DATA8_#40_gen.txt'
 local data = lines_from(file)
 
-size = 80
+size = 40
 count = 0
 --print(#data)
 for i = 1, #data, size do
-    --count = count + 1
-    --if i % size == 1 then
-    --    print('Shape '.. i / size..': ')
-    --end
     count = count + 1
     shape = {unpack(data, i, i + size - 1)}
-    --print('Shape ' .. i / size.. ': ')
-    --for j = 1, #shape, 2 do
-    --    print(shape[j], shape[j + 1])
-    --end
-    --print(data[i], data[i + 1])
-    --print(#shape)
     generator(shape)
 end
---print(count)
+print(count)
