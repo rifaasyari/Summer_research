@@ -70,7 +70,7 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA8_#40_gen.txt'
+local file = 'data/DATA12_#40_gen.txt'
 local data = lines_from(file)
 
 size = 40
@@ -81,4 +81,4 @@ for i = 1, #data, size do
     shape = {unpack(data, i, i + size - 1)}
     generator(shape)
 end
-print(count)
+--print(count)
