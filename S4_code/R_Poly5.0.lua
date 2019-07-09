@@ -70,10 +70,10 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA39_#37_gen.txt'
+local file = 'data/DATA36_#40_gen.txt'
 local data = lines_from(file)
 
-size = 40
+size = 32
 count = 0
 --print(#data)
 for i = 1, #data, size do
