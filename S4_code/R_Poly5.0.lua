@@ -70,7 +70,7 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA53_#35_gen.txt'
+local file = 'data/DATA57_#35_gen.txt'
 local data = lines_from(file)
 
 size = 40
