@@ -129,29 +129,6 @@ def data_generator(batch):
 #         plt.show()
 
 
-# In[11]:
-
-
-coordinates = np.genfromtxt('data/DATA'+str(5)+'_sh.txt')
-xc, yc = coordinates[:, 0], coordinates[:, 1]
-size = len(xc) // shape_size
-xc = np.reshape(xc, (size, shape_size))
-yc = np.reshape(yc, (size, shape_size))
-x = np.genfromtxt('data/SP_xaxis.txt')
-y = np.genfromtxt('data/DATA'+str(5)+'_sp.txt')
-for i in range(5):
-    print('The '+str(i)+'th shape:')
-    plt.axis('equal')
-    plt.ylim(-0.5, 0.5)
-    plt.xlim(-0.5, 0.5)
-    plt.plot(xc[i], yc[i])
-    plt.fill(xc[i], yc[i])
-    plt.show()
-    plt.ylim(0, 1.1)
-    plt.plot(x, y[i])
-    plt.show()
-
-
 # In[3]:
 
 
