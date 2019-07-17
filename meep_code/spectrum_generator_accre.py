@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[7]:
 
 
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 import numpy as np
 import math
 import meep as mp
@@ -89,7 +89,7 @@ def get_trans(vertices):
     return np.multiply(flux_freqs, c/p),Ts
 
 
-# In[2]:
+# In[8]:
 
 
 def data_generator(batch):
@@ -129,10 +129,10 @@ def data_generator(batch):
 #         plt.show()
 
 
-# In[3]:
+# In[9]:
 
 
-start, end = 5, 6
+start, end = 5,6
 for i in range(start, end):
     data_generator(i)
 
