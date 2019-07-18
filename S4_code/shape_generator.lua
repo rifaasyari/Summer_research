@@ -73,6 +73,21 @@ function insert_skipped2(skip, base, x)
     end
 end
 
+function one_8th_gen(cur_points, POINTS)
+    local base = {}
+    for i = 1, LINE, 1 do
+        if cur_points[i] ~= 0 then
+            cur_point = POINTS[i][cur_points[i]]
+            x = cur_point[1] * math.cos(cur_point[2] * SYMMETRYDEG)
+            y = cur_point[1] * math.sin(cur_point[2] * SYMMETRYDEG)
+            table.insert(base, {x, y})
+            --print(x, y)
+        end
+    end
+    return table.clone(base)
+end
+
+
 -- pass in cur POINTS, POINTS
 -- return one_8th of the shape
 function one_8th(cur_points, POINTS)
@@ -146,21 +161,13 @@ function permutation(cur, sub, res)
     table.remove(sub)
 end
 
--- generate the spectrum
-function generator(input)
-    for freq = 1/lamda3*period, 1/lamda1*period, 0.001 do
-        S:SetFrequency(freq)
-        S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, input)
-        S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
-        forw, back = S:GetAmplitudes('top', 0)
-        forw, h = S:GetAmplitudes('bottom', 0)
-        print(freq, str_from_complex(forw[1]))
-    end
-end
-
-function filter_duplicate(origin)
+function filter_duplicate(origin, gen)
     local result = {}
-    for i = 1, #origin - 2, 2 do
+    local offset = 2
+    if gen == 0 then
+        offset = 0
+    end
+    for i = 1, #origin - offset, 2 do
         if i > 2 and math.abs(origin[i - 2] - origin[i]) <= 0.00001 and
                      math.abs(origin[i + 1] - origin[i - 1]) <= 0.00001 then
             --print(origin[i], origin[i + 1], i, i + 1)
@@ -182,9 +189,9 @@ count = 0
 sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
 
-for k = 2, 3, 1 do
+--for k = 2, 3, 1 do
     -- test code: choose the activation sequence
-    --k = 5
+    k = 64
 
     activate = permutations[k]
 
@@ -216,6 +223,8 @@ for k = 2, 3, 1 do
     --print('# of shapes: ' .. #res)
 
     -- count = count + #res
+    --activate = {1,0,0,0,0,0}
+    --res = {0,0,0,0,0,3}
     for i = 1, #res, 1 do
         -- test code: choose the number of shape
         --i = 1
@@ -234,19 +243,31 @@ for k = 2, 3, 1 do
         -- propagate through four quarters
         shape = {}
         gen_full_shape(base, SYMMETRY, shape)
-        --for qq = 1, #shape, 2 do
-        --    print(shape[qq], shape[qq + 1])
-        --end
-        --print('filtered graph')
-
-        shape2 = filter_duplicate(shape)
-        -- test shape
-        for qq = 1, #shape2, 2 do
-            print(shape2[qq], shape2[qq + 1])
+        for qq = 1, #shape, 2 do
+           print(shape[qq], shape[qq + 1])
         end
+
+        base = one_8th_gen(res[i], POINTS)
+        --print(#base)
+        for i = #base, 1, -1 do
+            table.insert(base, {base[i][2], base[i][1]})
+        end
+        -- propagate through four quarters
+        shape = {}
+        gen_full_shape(base, SYMMETRY, shape)
+        shape2 = filter_duplicate(shape, activate[1])
+        -- test shape
+        --for qq = 1, #shape2, 2 do
+        --    print(shape2[qq], shape2[qq + 1])
+        --end
+        --print(activate[1])
+        --print(#shape2)
+        --for qq = 1, #shape2, 1 do
+        --   print(shape2[qq])
+        --end
 
     end
 
 --end
-
-print('Total # of shape: ' .. count)
+--print(#shape2)
+--print('Total # of shape: ' .. count)

@@ -5,12 +5,12 @@ SYMMETRYDEG = math.pi / 180
 math.randomseed(os.time())
 SYMMETRY = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}}
 -- all pixel POINTS
-POINTS = {{{0, 0}, {0.1, 0}, {0.2, 0}, {0.3, 0}, {0.4, 0}, {0.5, 0}},
-          {{0, 9}, {0.1, 9}, {0.2, 9}, {0.3, 9}, {0.4, 9}, {0.5, 9}},
-          {{0, 18}, {0.1, 18}, {0.2, 18}, {0.3, 18}, {0.4, 18}, {0.5, 18}},
-          {{0, 27}, {0.1, 27}, {0.2, 27}, {0.3, 27}, {0.4, 27}, {0.5, 27}},
-          {{0, 36}, {0.1, 36}, {0.2, 36}, {0.3, 36}, {0.4, 36}, {0.5, 36}, {0.6, 36}},
-          {{0, 45}, {0.1 ,45}, {0.2, 45}, {0.3, 45}, {0.4, 45}, {0.5, 45}, {0.6, 45}, {0.7, 45}}}
+POINTS = {{{0.1, 0}, {0.2, 0}, {0.3, 0}, {0.4, 0}, {0.5, 0}},
+          {{0.1, 9}, {0.2, 9}, {0.3, 9}, {0.4, 9}, {0.5, 9}},
+          {{0.1, 18}, {0.2, 18}, {0.3, 18}, {0.4, 18}, {0.5, 18}},
+          {{0.1, 27}, {0.2, 27}, {0.3, 27}, {0.4, 27}, {0.5, 27}},
+          {{0.1, 36}, {0.2, 36}, {0.3, 36}, {0.4, 36}, {0.5, 36}, {0.6, 36}},
+          {{0.1 ,45}, {0.2, 45}, {0.3, 45}, {0.4, 45}, {0.5, 45}, {0.6, 45}, {0.7, 45}}}
 
 ---------------------------------- Functions -----------------------------------
 
@@ -173,6 +173,7 @@ function generate_spectrum()
     end
 end
 
+--[[
 -- check if the shape is able to generate spectrum
 function check_shape(p)
     num_zero = 0
@@ -186,7 +187,31 @@ function check_shape(p)
     end
     return true
 end
-
+--]]
+--[[
+function cannot_use(origin)
+    local cnt = 0
+    local cnt_2 = 0
+    for i = 1, LINE, 1 do
+        if i >= 3 and origin[i] == 1 and origin[i - 1] > 1 and origin[i - 2] == 1 then
+            return true
+        end
+    end
+    return false
+end
+--]]
+function filter_duplicate(origin)
+    res = {}
+    for i = 1, #origin - 2, 2 do
+        if i > 2 and origin[i - 2] == origin[i] and origin[i + 1] == origin[i - 1] then
+        else
+            --print(origin[i], origin[i + 1], i, i + 1)
+            table.insert(res, origin[i])
+            table.insert(res, origin[i + 1])
+        end
+    end
+    return res
+end
 ------------------------------- Main starts here -------------------------------
 
 S = S4.NewSimulation()
@@ -221,14 +246,17 @@ S:AddLayerCopy('bottom', 0, 'top')
 count = 0
 sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
-for k = 2, #permutations, 1 do
+--for k = 2, #permutations, 1 do
+--batch = 20
+--for k = 2, 1 * batch, 1 do
     -- test code: choose the activation sequence
-    --k = 2
+    k = 2
+
     activate = permutations[k]
 
     -- test code: see the activated line
-    -- print('Activated lines')
-    -- print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
+     print('Activated lines')
+     print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
 
     sub, res = {}, {}
     dfs_start = -1
@@ -251,32 +279,39 @@ for k = 2, #permutations, 1 do
     end
 
     -- test code: the number of current shape
-    -- print('# of shapes: ' .. #res)
+     print('# of shapes: ' .. #res)
 
-    count = count + #res
+    --count = count + #res
     for i = 1, #res, 1 do
         -- test code: choose the number of shape
         -- i = 2
+        print(#res[i])
+print('Shape: ' .. count)
+print(res[i][1], res[i][2], res[i][3], res[i][4], res[i][5], res[i][6])
 
-        -- test the dfs result, ex {1, 0, 2, 3, 1, 5}
-        -- for b = 1, #res, 1 do
-        --    print(res[b][1], res[b][2], res[b][3], res[b][4], res[b][5], res[b][6])
-        -- end
-        base = one_8th(res[i], POINTS)
-        for i = LINE, 1, -1 do
-            table.insert(base, {base[i][2], base[i][1]})
-        end
-        shape = {}
-        -- propagate through four quarters
-        gen_full_shape(base, SYMMETRY, shape)
+        --if cannot_use(res[i]) then
+        --else
+            -- test the dfs result, ex {1, 0, 2, 3, 1, 5}
+            count = count + 1
+            print('Shape: ' .. count)
+            print(res[i][1], res[i][2], res[i][3], res[i][4], res[i][5], res[i][6])
 
-        -- test shape
-        -- for q = 1, #shape, 2 do
-        --    print(shape[q], shape[q + 1])
-        -- end
+            base = one_8th(res[i], POINTS)
+            for i = LINE, 1, -1 do
+                table.insert(base, {base[i][2], base[i][1]})
+            end
+            shape = {}
+            -- propagate through four quarters
+            gen_full_shape(base, SYMMETRY, shape)
+            shape = filter_duplicate(shape)
+            -- test shape
+             for q = 1, #shape, 2 do
+                print(shape[q], shape[q + 1])
+             end
 
-        generate_spectrum()
+            --generate_spectrum()
+        --end
     end
-end
+--end
 
 print('Total # of shpae: ' .. count)

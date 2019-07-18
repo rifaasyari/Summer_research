@@ -251,9 +251,9 @@ batch = 2
 begin = 9
 --for k = begin, begin + batch, 1 do
     -- test code: choose the activation sequence
-    k = 2
+    k = 12
 
-    activate = permutations[12]
+    activate = permutations[k]
 
     -- test code: see the activated line
     -- print('Activated lines')
@@ -283,7 +283,7 @@ begin = 9
     -- print('# of shapes: ' .. #res)
 
     -- count = count + #res
-    for i = 1, #res, 1 do
+    for i = 6, #res, 1 do
         -- test code: choose the number of shape
         -- i = 2
 
@@ -304,7 +304,7 @@ begin = 9
 
             -- test shape
             --for qq = 1, #shape, 2 do
-            --    print(shape[qq], shape[qq + 1])
+            --   print(shape[qq], shape[qq + 1])
             --end
 
             -- output y (12 * len . 1)

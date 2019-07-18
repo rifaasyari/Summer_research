@@ -27,7 +27,7 @@ S:AddLayer('top', 0, 'PDMS')
 S:AddLayer('slab',h_relative , 'PDMS')
 S:AddLayer('bottom', 0, 'PDMS')
 
---------------------------------- Functions -----------------------------------
+--------------------------------- Functions ------------------------------------
 
 function file_exists(file)
     local f = io.open(file, "rb")
@@ -70,15 +70,18 @@ end
 
 ------------------------------- Main starts here -------------------------------
 
-local file = 'data/DATA57_#35_gen.txt'
+local file = '../Prediction/2019_7_15_1_p_gen.txt'
 local data = lines_from(file)
 
 size = 40
 count = 0
 --print(#data)
-for i = 1, #data, size do
+generator(data)
+--[[
+for i = 1, #data, #data do
     count = count + 1
-    shape = {unpack(data, i, i + size - 1)}
+    shape = {unpack(data, i, i + #data - 1)}
     generator(shape)
 end
+--]]
 --print(count)

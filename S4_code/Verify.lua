@@ -76,10 +76,6 @@ local data = lines_from(file)
 
 base = one_8th(data, ANGLE)
 
---for i = 1, #base, 1 do
---    print(base[i][1], base[i][2])
---end
-
 for i = 6, 1, -1 do
     table.insert(base, {base[i][2], base[i][1]})
 end
@@ -89,21 +85,10 @@ gen_full_shape(base, SYMMETRY, shape)
 --for qq = 1, #shape, 2 do
 --   print(shape[qq], shape[qq + 1])
 --end
-
-
-for i = LINE, 1, -1 do
-    table.insert(base, {base[i][2], base[i][1]})
-end
--- propagate through four quarters
-shape = {}
-gen_full_shape(base, SYMMETRY, shape)
 shape2 = filter_duplicate(shape)
--- test shape
 --for qq = 1, #shape2, 2 do
 --    print(shape2[qq], shape2[qq + 1])
 --end
---print(activate[1])
---print(#shape2)
 for qq = 1, #shape2, 1 do
-  print(shape2[qq])
+    print(shape2[qq])
 end

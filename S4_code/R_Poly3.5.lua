@@ -245,7 +245,7 @@ h_relative=h/period;
 
 S:AddLayer('top', 0, 'PDMS')
 S:AddLayer('slab',h_relative , 'PDMS')
-S:AddLayerCopy('bottom', 0, 'top')
+S:AddLayer('bottom', 0, 'PDMS')
 
 
 count = 0
