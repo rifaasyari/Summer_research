@@ -223,7 +223,7 @@ count = 0
 sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
 
---for k = 2, #permutations, 1 do
+--for k = 3, #permutations, 1 do
     -- test code: choose the activation sequence
     k = 5
 
@@ -257,9 +257,9 @@ permutation(1, sub_p, permutations)
     --print('# of shapes: ' .. #res)
 
     -- count = count + #res
-    --for i = 1, #res, 1 do
+    for i = 1, #res, 1 do
         -- test code: choose the number of shape
-         i = 1
+         --i = 1
 
 
         -- test the dfs result, ex {1, 0, 2, 3, 1, 5}
@@ -326,13 +326,17 @@ permutation(1, sub_p, permutations)
         0.089100652418837,	-0.028950556918082,
         0.089100652418837,	-0.014112156965909
         }
-        for i = 1, #s, 1 do
-            if math.abs(s[i] - shape2[i]) > 0.000001 then
-                print('false')
-            end
-            --print(s[i],shape2[i])
+        --for i = 1, #s, 1 do
+        --    if math.abs(s[i] - shape2[i]) > 0.000001 then
+        --        print('false')
+        --    end
+        --    print(shape2[i])
+        --end
+        for i = 1, #shape2, 1 do
+            print(shape2[i])
         end
-        generator(shape2)
-    --end
+        --generator(s)
+    end
 
 --end
+--print('Total # of shape: ' .. count)

@@ -5,12 +5,12 @@ SYMMETRYDEG = math.pi / 180
 math.randomseed(os.time())
 SYMMETRY = {{1, 1}, {-1, 1}, {-1, -1}, {1, -1}}
 -- all pixel POINTS
-POINTS = {{{0, 0}, {0.1, 0}, {0.2, 0}, {0.3, 0}, {0.4, 0}, {0.5, 0}},
-          {{0, 9}, {0.1, 9}, {0.2, 9}, {0.3, 9}, {0.4, 9}, {0.5, 9}},
-          {{0, 18}, {0.1, 18}, {0.2, 18}, {0.3, 18}, {0.4, 18}, {0.5, 18}},
-          {{0, 27}, {0.1, 27}, {0.2, 27}, {0.3, 27}, {0.4, 27}, {0.5, 27}},
-          {{0, 36}, {0.1, 36}, {0.2, 36}, {0.3, 36}, {0.4, 36}, {0.5, 36}, {0.6, 36}},
-          {{0, 45}, {0.1 ,45}, {0.2, 45}, {0.3, 45}, {0.4, 45}, {0.5, 45}, {0.6, 45}, {0.7, 45}}}
+POINTS = {{{0.1, 0}, {0.2, 0}, {0.3, 0}, {0.4, 0}, {0.5, 0}},
+          {{0.1, 9}, {0.2, 9}, {0.3, 9}, {0.4, 9}, {0.5, 9}},
+          {{0.1, 18}, {0.2, 18}, {0.3, 18}, {0.4, 18}, {0.5, 18}},
+          {{0.1, 27}, {0.2, 27}, {0.3, 27}, {0.4, 27}, {0.5, 27}},
+          {{0.1, 36}, {0.2, 36}, {0.3, 36}, {0.4, 36}, {0.5, 36}, {0.6, 36}},
+          {{0.1 ,45}, {0.2, 45}, {0.3, 45}, {0.4, 45}, {0.5, 45}, {0.6, 45}, {0.7, 45}}}
 
 ---------------------------------- Functions -----------------------------------
 
@@ -161,9 +161,9 @@ end
 
 -- generate the spectrum
 function generate_spectrum()
-    for freq = 1/lamda3*period, 1/lamda1*period, 0.003 do
+    for freq = 1/lamda3*period, 1/lamda1*period, 0.001 do
         S:SetFrequency(freq)
-        S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape)
+        S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape2)
         S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
 
         forw, back = S:GetAmplitudes('top', 0)
@@ -172,23 +172,7 @@ function generate_spectrum()
         print(freq, str_from_complex(forw[1]))
     end
 end
-
 --[[
--- check if the shape is able to generate spectrum
-function check_shape(p)
-    num_zero = 0
-    for i = 1, #p, 1 do
-        if p[i] == 1 then
-            num_zero = num_zero + 1
-        end
-        if LINE - num_zero < 2 then
-            return false
-        end
-    end
-    return true
-end
---]]
-
 function cannot_use(origin)
     local cnt = 0
     local cnt_2 = 0
@@ -211,7 +195,22 @@ function cannot_use(origin)
     end
     return false
 end
+--]]
 
+function filter_duplicate(origin)
+    local result = {}
+    for i = 1, #origin - 2, 2 do
+        if i > 2 and math.abs(origin[i - 2] - origin[i]) <= 0.00001 and
+                     math.abs(origin[i + 1] - origin[i - 1]) <= 0.00001 then
+            --print(origin[i], origin[i + 1], i, i + 1)
+        else
+            --print(origin[i], origin[i + 1], i, i + 1)
+            table.insert(result, origin[i])
+            table.insert(result, origin[i + 1])
+        end
+    end
+    return result
+end
 ------------------------------- Main starts here -------------------------------
 
 S = S4.NewSimulation()
@@ -221,7 +220,7 @@ vx = 0
 vy = 1
 
 S:SetLattice({ux,uy}, {vx,vy})
-S:SetNumG(100)
+S:SetNumG(140)
 
 lamda1=1;
 lamda2=1.42;
@@ -247,17 +246,17 @@ count = 0
 sub_p, permutations = {}, {}
 permutation(1, sub_p, permutations)
 --for k = 2, #permutations, 1 do
-batch = 2
-begin = 9
---for k = begin, begin + batch, 1 do
+batch = 1
+begin = 2
+--for k = 2, 3, 1 do
     -- test code: choose the activation sequence
-    k = 15
+    k = 6
 
     activate = permutations[k]
 
     -- test code: see the activated line
-    -- print('Activated lines')
-    -- print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
+     --print('Activated lines')
+     --print(activate[1], activate[2], activate[3], activate[4], activate[5], activate[6])
 
     sub, res = {}, {}
     dfs_start = -1
@@ -280,15 +279,15 @@ begin = 9
     end
 
     -- test code: the number of current shape
-    -- print('# of shapes: ' .. #res)
+    --print('# of shapes: ' .. #res)
 
     -- count = count + #res
-    for i = 6, #res, 1 do
+    for i = 1, #res, 1 do
         -- test code: choose the number of shape
         -- i = 2
 
-        if cannot_use(res[i]) then
-        else
+        --if cannot_use(res[i]) then
+        --else
             -- test the dfs result, ex {1, 0, 2, 3, 1, 5}
             count = count + 1
             --print('Shape: ' .. count)
@@ -299,22 +298,28 @@ begin = 9
                 table.insert(base, {base[i][2], base[i][1]})
             end
             shape = {}
+
             -- propagate through four quarters
             gen_full_shape(base, SYMMETRY, shape)
-
-            -- test shape
             --for qq = 1, #shape, 2 do
             --    print(shape[qq], shape[qq + 1])
             --end
+            --print('filtered graph')
+
+            shape2 = filter_duplicate(shape)
+            -- test shape
+            --for qq = 1, #shape2, 2 do
+            --    print(shape2[qq], shape2[qq + 1])
+            --end
 
             -- output y (12 * len . 1)
-            --[[
-             for q = 1, LINE, 1 do
-                print(base[q][1], base[q][2])
-             end
-            --]]
+
+             --for q = 1, LINE, 1 do
+            --    print(base[q][1], base[q][2])
+             --end
+
             generate_spectrum()
-        end
+        --end
     end
 --end
 

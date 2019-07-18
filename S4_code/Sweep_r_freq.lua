@@ -47,15 +47,15 @@ r =0.40939066
     for freq = 1/lamda3*period, 1/lamda1*period, 0.005 do
 
         S:SetFrequency(freq)
-        --S:SetLayerPatternRectangle('slab', 'Silicon', {0, 0}, 0, {0.1, 0.1})
-        -- S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape)
-        S:SetLayerPatternCircle('slab', 'Silicon', {0,0}, r)
+        --S:SetLayerPatternRectangle('slab', 'Silicon', {0, 0}, 0, {0.25, 0.25})
+         S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape)
+        --S:SetLayerPatternCircle('slab', 'Silicon', {0,0}, r)
         S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
 
         forw, back = S:GetAmplitudes('top', 0)
         forw, h = S:GetAmplitudes('bottom', 0)
 
-        print(r, freq, str_from_complex(forw[1]))
+        print(freq, str_from_complex(forw[1]))
 
     end
 --end

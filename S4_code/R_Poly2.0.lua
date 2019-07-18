@@ -17,11 +17,11 @@ end
 function dfs(points, cur_line, pre, end_line, sub, res)
     if cur_line > end_line then
       --count = count + 1
-                  --print("combination")
+                  print("combination")
         table.insert(res, table.clone(sub))
-                  --for i = 1, #sub, 1 do
-                  --    print(sub[i])
-                  --end
+                  for i = 1, #sub, 1 do
+                      print(sub[i])
+                  end
         return
     end
 
@@ -31,6 +31,24 @@ function dfs(points, cur_line, pre, end_line, sub, res)
             table.insert(sub, next)
             dfs(points, cur_line + 1, next, end_line, sub, res)
             table.remove(sub)
+        end
+    end
+end
+
+function gen_full_shape(quarter, symmetry, shape)
+    for i = 1, #symmetry, 1 do
+        if i % 2 == 1 then
+            for j = 1, #quarter, 1 do
+                for k = 1, 2, 1 do
+                    table.insert(shape, quarter[j][k] * symmetry[i][k])
+                end
+            end
+        else
+            for j = #quarter, 1 , -1 do
+                for k = 1, 2, 1 do
+                    table.insert(shape, quarter[j][k] * symmetry[i][k])
+                end
+            end
         end
     end
 end
@@ -84,12 +102,19 @@ for i = 1, 6, 1 do
     table.remove(sub)
 end
 
-test_shape = 700
---[[
-for i = 1, #res[100], 1 do
-    print(res[test_shape][i])
+test_shape = 100
+function generate_spectrum()
+    for freq = 1/lamda3*period, 1/lamda1*period, 0.003 do
+        S:SetFrequency(freq)
+        S:SetLayerPatternPolygon('slab', 'Silicon', {0, 0}, 0, shape)
+        S:SetExcitationPlanewave({0, 0}, {1, 0}, {0, 0})
+
+        forw, back = S:GetAmplitudes('top', 0)
+        forw, h = S:GetAmplitudes('bottom', 0)
+
+        print(freq, str_from_complex(forw[1]))
+    end
 end
---]]
 --for i = 1, #res, 1 do
     local cur_points = res[test_shape]
     -- apply the first 45 degree points distribution
@@ -111,26 +136,11 @@ end
     end
 
     -- propagate through four quarters
-    for i = 1, #symmetry, 1 do
-        if i % 2 == 1 then
-            for j = 1, #quarter, 1 do
-                for k = 1, 2, 1 do
-                    table.insert(shape, quarter[j][k] * symmetry[i][k])
-                end
-            end
-        else
-            for j = #quarter, 1 , -1 do
-                for k = 1, 2, 1 do
-                    table.insert(shape, quarter[j][k] * symmetry[i][k])
-                end
-            end
-        end
-    end
-
+    gen_full_shape(quarter, symmetry, shape)
     for i = 1, #shape, 2 do
         print(shape[i], shape[i + 1])
     end
-
+    generate_spectrum()
     --[[
         for freq = 1/lamda3*period, 1/lamda1*period, 0.002 do
         S:SetFrequency(freq)
