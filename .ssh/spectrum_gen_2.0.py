@@ -96,18 +96,19 @@ def get_straight():
 
 
 def data_generator(batch):
-    data = []
+    
     # get shape from 'data/DATAX_sh.txt'
     coordinates = np.genfromtxt('data/DATA'+str(batch)+'_sh.txt')
     xc, yc = coordinates[:, 0], coordinates[:, 1]
     size = len(xc) // shape_size
     xc = np.reshape(xc, (size, shape_size))
     yc = np.reshape(yc, (size, shape_size))
-    
+    filt = []
     for i in range(size):
         # form shape
+        if i in filt:
+            continue
         vertices = [mp.Vector3(xc[i][0],yc[i][0])]
-
         for j in range(1, len(xc[i]) - 1):
             # eliminate duplicate point
             if xc[i][j] == xc[i][j - 1] and yc[i][j] == yc[i][j - 1]:
@@ -120,10 +121,10 @@ def data_generator(batch):
         st = np.genfromtxt('data/straight.txt')
         for j in range(nfreq):
             Ts = np.append(Ts, bend[j]/st[j])
-        data.append(Ts)
+        np.savetxt('data/DATA'+str(batch)+'_sp'+str(i)+'.txt', Ts)
         print('\n Batch: ' + str(batch) + ' progress: '+ str(i + 1)+'/'+str(size) + '\n')
     # save the spectrum to 'data/DATAX_sp.txt'
-    np.savetxt('data/DATA'+str(batch)+'_sp.txt', data)
+    #np.savetxt('data/DATA'+str(batch)+'_sp.txt', data)
 #     x = np.genfromtxt('data/SP_xaxis.txt')
 #     y = np.genfromtxt('data/DATA'+str(batch)+'_sp.txt')
 #     for i in range(size):
@@ -142,7 +143,7 @@ def data_generator(batch):
 # In[20]:
 
 
-start, end = 62,65
-for i in range(start, end):
+b = [39]
+for i in b:
     data_generator(i)
 
