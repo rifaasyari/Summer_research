@@ -116,7 +116,7 @@ def data_generator(batch, ran):
 # In[5]:
 
 
-batch = 48
-ran = [x for x in range(206, 287)]
+batch = 35
+ran = [x for x in range(0,14)]
 data_generator(batch, ran)
 
