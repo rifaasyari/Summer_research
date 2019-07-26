@@ -26,7 +26,7 @@ sx, sy, sz = 1, 1, 4
 h = 1.25
 dpml = 0.5
 b_m, c_m = 1.4, 3.54
-res = 23
+res = 27
 echo = 1000
 cell_size = mp.Vector3(sx,sy,sz)
 fcen = 0.5
@@ -99,8 +99,8 @@ def get_bend(vertices):
 # In[ ]:
 
 
-batch = 44
-ran = [i for i in range(106)]
+batch = 62
+ran = [i for i in range(272)]
 miss = spec(batch, ran)
 #freq = np.genfromtxt('data/freq.txt')
 for i in ran:
@@ -110,7 +110,7 @@ for i in ran:
         print('Batch: '+str(batch)+ ' sample: '+str(i))
         Ts = get_spec(batch,i)
         np.savetxt(path +str(i)+'.txt', Ts)
-        Ts = np.genfromtxt(path +str(i)+'.txt')
+        #Ts = np.genfromtxt(path +str(i)+'.txt')
         #plt.ylim(0, 1.1)
         #plt.plot(freq, Ts)
         #plt.show()
