@@ -99,8 +99,8 @@ def get_bend(vertices):
 # In[ ]:
 
 
-batch = 62
-ran = [i for i in range(272)]
+batch = 64
+ran = [i for i in range(781)]
 miss = spec(batch, ran)
 #freq = np.genfromtxt('data/freq.txt')
 for i in ran:

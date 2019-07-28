@@ -191,7 +191,7 @@ permutation(1, sub_p, permutations)
 
 --for k = 2, 3, 1 do
     -- test code: choose the activation sequence
-    k = 64
+    k = 16
 
     activate = permutations[k]
 
