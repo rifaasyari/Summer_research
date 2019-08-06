@@ -16,7 +16,7 @@ sx, sy, sz = 1, 1, 4
 h = 1.25
 dpml = 0.5
 b_m, c_m = 1.4, 3.54
-res = 15
+res = 19
 echo = 1000
 cell_size = mp.Vector3(sx,sy,sz)
 fcen = 0.5
@@ -112,7 +112,7 @@ def data_generator(batch, ran):
 # In[ ]:
 
 
-batch = 2
-ran = [x for x in range(7)]
+batch = 52
+ran = [x for x in range(90, 106)]
 data_generator(batch, ran)
 
